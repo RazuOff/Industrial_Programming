@@ -20,5 +20,4 @@ func fillEndpoints(router *gin.Engine) {
 
 	router.DELETE("/products/:id", deleteProduct)
 
-	router.Run(":8080")
 }
