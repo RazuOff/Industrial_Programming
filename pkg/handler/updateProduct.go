@@ -1,4 +1,4 @@
-package api
+package handler
 
 import (
 	"net/http"
@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func updateProduct(c *gin.Context) {
+func UpdateProduct(c *gin.Context) {
 	id := c.Param("id")
 	var updatedProd models.Product
 

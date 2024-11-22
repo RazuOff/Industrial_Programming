@@ -11,3 +11,10 @@ type Product struct {
 	Description       string
 	ImageUrl          string
 }
+
+type User struct {
+	Id       string
+	Username string
+	Password string
+	Role     string
+}

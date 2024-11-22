@@ -1,6 +1,10 @@
 package api
 
-import "github.com/gin-gonic/gin"
+import (
+	"ginexample.com/pkg/auth"
+	"ginexample.com/pkg/handler"
+	"github.com/gin-gonic/gin"
+)
 
 func StartServer(port string) {
 	router := gin.Default()
@@ -10,14 +14,20 @@ func StartServer(port string) {
 
 func fillEndpoints(router *gin.Engine) {
 
-	router.GET("/products", GetProducts)
+	router.POST("/registrate", handler.Registrate)
 
-	router.GET("/products/:id", GetProductsById)
+	router.POST("/login", handler.Login)
 
-	router.POST("/products", createProduct)
+	router.GET("/products", handler.GetProducts)
 
-	router.PUT("/products/:id", updateProduct)
+	router.GET("/products/:id", handler.GetProductsById)
 
-	router.DELETE("/products/:id", deleteProduct)
+	router.GET("/users", auth.AuthMiddleware(), handler.GetUsers)
+
+	router.POST("/products", auth.AuthMiddleware(), auth.AdminCheck(), handler.CreateProduct)
+
+	router.PUT("/products/:id", auth.AuthMiddleware(), auth.AdminCheck(), handler.UpdateProduct)
+
+	router.DELETE("/products/:id", auth.AuthMiddleware(), auth.AdminCheck(), handler.DeleteProduct)
 
 }

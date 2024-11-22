@@ -1,4 +1,4 @@
-package api
+package handler
 
 import (
 	"net/http"
@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func createProduct(c *gin.Context) {
+func CreateProduct(c *gin.Context) {
 	var newBook models.Product
 
 	if err := c.BindJSON(&newBook); err != nil {
