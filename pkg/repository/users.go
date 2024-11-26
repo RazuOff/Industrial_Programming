@@ -8,20 +8,6 @@ import (
 	"ginexample.com/pkg/models"
 )
 
-var users = []models.User{
-	{
-		Id:       "1",
-		Username: "Admin",
-		Password: "1234",
-		Role:     "Admin",
-	},
-	{
-		Id:       "2",
-		Username: "user",
-		Password: "1234",
-	},
-}
-
 func GetUserByLogin(login string) (models.User, error) {
 	for _, user := range users {
 		if user.Username == login {
