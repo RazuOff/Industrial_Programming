@@ -62,18 +62,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 func AdminCheck() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// tokenString := c.GetHeader("Authorization")
 
-		// claims := &Claims{}
-		// token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		// 	return jwtKey, nil
-		// })
-
-		// if err != nil || !token.Valid {
-		// 	c.JSON(http.StatusUnauthorized, gin.H{"message": "unauthorized"})
-		// 	c.Abort()
-		// 	return
-		// }
 		if role, exists := c.Get("role"); !exists {
 			c.JSON(http.StatusUnauthorized, gin.H{"message": "unauthorized"})
 			c.Abort()

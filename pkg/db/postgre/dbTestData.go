@@ -1,10 +1,9 @@
-package db
+package postgre
 
 import "ginexample.com/pkg/models"
 
 var testProducts = []models.Product{
 	{
-		Id:                "1",
 		ManufacturerId:    1,
 		ProductCategoryId: 1,
 		Name:              "Intel Core i7-12700K",
@@ -15,7 +14,7 @@ var testProducts = []models.Product{
 		ImageUrl:          "https://example.com/intel-i7.jpg",
 	},
 	{
-		Id:                "2",
+
 		ManufacturerId:    2,
 		ProductCategoryId: 2,
 		Name:              "NVIDIA GeForce RTX 4070",
@@ -29,13 +28,11 @@ var testProducts = []models.Product{
 
 var testUsers = []models.User{
 	{
-		Id:       "1",
 		Username: "Admin",
 		Password: "1234",
 		Role:     "Admin",
 	},
 	{
-		Id:       "2",
 		Username: "user",
 		Password: "1234",
 	},

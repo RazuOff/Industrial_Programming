@@ -9,13 +9,16 @@ import (
 )
 
 func CreateProduct(c *gin.Context) {
-	var newBook models.Product
+	var newProduct models.Product
 
-	if err := c.BindJSON(&newBook); err != nil {
+	if err := c.BindJSON(&newProduct); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
 		return
 	}
 
-	*repository.GetProducts() = append(*repository.GetProducts(), newBook)
-	c.JSON(http.StatusCreated, newBook)
+	if err := repository.AddProducts([]models.Product{newProduct}); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, newProduct)
 }

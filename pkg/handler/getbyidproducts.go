@@ -3,19 +3,19 @@ package handler
 import (
 	"net/http"
 
+	"ginexample.com/pkg/models"
 	"ginexample.com/pkg/repository"
 	"github.com/gin-gonic/gin"
 )
 
 func GetProductsById(c *gin.Context) {
 	id := c.Param("id")
+	var product models.Product
+	product, err := repository.GetProductById(id)
 
-	for _, item := range *repository.GetProducts() {
-		if item.Id == id {
-			c.JSON(http.StatusOK, item)
-			return
-		}
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
+		return
 	}
-
-	c.JSON(http.StatusNotFound, gin.H{"message": "prod not found"})
+	c.JSON(http.StatusOK, product)
 }

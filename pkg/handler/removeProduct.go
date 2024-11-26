@@ -10,13 +10,17 @@ import (
 func DeleteProduct(c *gin.Context) {
 	id := c.Param("id")
 
-	for i, book := range *repository.GetProducts() {
-		if book.Id == id {
-			*repository.GetProducts() = append((*repository.GetProducts())[:i], (*repository.GetProducts())[i+1:]...)
-			c.JSON(http.StatusOK, gin.H{"message": "product deleted"})
-			return
-		}
+	products, err := repository.GetProductById(id)
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
+		return
 	}
 
-	c.JSON(http.StatusNotFound, gin.H{"message": "product not found"})
+	if err := repository.DeleteProduct(products); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "product deleted"})
 }

@@ -9,7 +9,7 @@ import (
 )
 
 func UpdateProduct(c *gin.Context) {
-	id := c.Param("id")
+
 	var updatedProd models.Product
 
 	if err := c.BindJSON(&updatedProd); err != nil {
@@ -17,13 +17,10 @@ func UpdateProduct(c *gin.Context) {
 		return
 	}
 
-	for i, item := range *repository.GetProducts() {
-		if item.Id == id {
-			(*repository.GetProducts())[i] = updatedProd
-			c.JSON(http.StatusOK, updatedProd)
-			return
-		}
+	if err := repository.UpdateProduct(updatedProd); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
 	}
 
-	c.JSON(http.StatusNotFound, gin.H{"message": "product not found"})
+	c.JSON(http.StatusOK, gin.H{"message": "product updated"})
 }

@@ -1,7 +1,7 @@
 package models
 
 type Product struct {
-	Id                string  `gorm:"primaryKey" json:"id"`
+	ID                int     `gorm:"primaryKey"`
 	ManufacturerId    int     `json:"manufacturer_id"`
 	ProductCategoryId int     `json:"productCategory_id"`
 	Name              string  `json:"name"`
@@ -13,8 +13,8 @@ type Product struct {
 }
 
 type User struct {
-	Id       string `gorm:"primaryKey" json:"id"`
+	ID       int    `gorm:"primaryKey"`
 	Username string `json:"username"`
 	Password string `json:"password"`
-	Role     string `gorm:"default:'User'" json:"role"`
+	Role     string `gorm:"default:'User'"`
 }

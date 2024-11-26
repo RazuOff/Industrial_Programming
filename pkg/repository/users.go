@@ -1,25 +1,21 @@
 package repository
 
 import (
-	"errors"
-	"strconv"
-
-	"ginexample.com/pkg/auth"
+	"ginexample.com/pkg/db/postgre"
 	"ginexample.com/pkg/models"
 )
 
 func GetUserByLogin(login string) (models.User, error) {
-	for _, user := range users {
-		if user.Username == login {
-			return user, nil
-		}
-	}
-	return models.User{}, errors.New("user not found")
+	var user models.User
+	err := postgre.DB.Where("username = ?", login).First(&user).Error
+	return user, err
 }
-func GetAllUsers() []models.User {
-	return users
+func GetUsers() ([]models.User, error) {
+	var users []models.User
+	err := postgre.DB.Find(&users).Error
+	return users, err
 }
+func AddUser(login string, password string) error {
 
-func AddUser(login string, password string) {
-	users = append(users, models.User{Id: strconv.Itoa(len(users) + 1), Username: login, Password: password, Role: auth.USER_ROLE})
+	return postgre.DB.Create(&models.User{Username: login, Password: password}).Error
 }

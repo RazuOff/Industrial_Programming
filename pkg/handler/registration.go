@@ -20,7 +20,11 @@ func Registrate(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"massage": "user already exists"})
 		return
 	}
-	repository.AddUser(inputForm.Username, inputForm.Password)
+
+	if err := repository.AddUser(inputForm.Username, inputForm.Password); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"massage": err.Error()})
+		return
+	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "account created"})
 }

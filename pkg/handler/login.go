@@ -17,7 +17,7 @@ func Login(c *gin.Context) {
 
 	user, err := repository.GetUserByLogin(creds.Username)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "user not found"})
+		c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
 		return
 	}
 
