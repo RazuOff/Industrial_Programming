@@ -1,14 +1,34 @@
 package repository
 
 import (
+	"context"
+
 	"ginexample.com/pkg/db/postgre"
 	"ginexample.com/pkg/models"
 )
 
-func GetProducts() ([]models.Product, error) {
+func GetProducts(limit int, page int, searchString string, sort string) ([]models.Product, error) {
 	var products []models.Product
-	err := postgre.DB.Find(&products).Error
+
+	offset := (page - 1) * limit
+	query := postgre.DB.Limit(limit).Offset(offset)
+	if searchString != "" {
+		query = query.Where("name ILIKE ?", "%"+searchString+"%")
+	}
+	if sort != "" {
+		query = query.Order(sort + " DESC")
+	}
+
+	err := query.Find(&products).Error
 	return products, err
+}
+
+func GetProductsCtx(ctx *context.Context) ([]models.Product, error) {
+	var products []models.Product
+	err := postgre.DB.WithContext(*ctx).Find(&products).Error
+
+	return products, err
+
 }
 
 func AddProducts(products []models.Product) error {
