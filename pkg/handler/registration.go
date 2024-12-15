@@ -8,6 +8,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Registrate godoc
+// @Summary      Register a new user
+// @Description  Creates a new user account if the username is available
+// @Tags         authentication
+// @Accept       json
+// @Produce      json
+// @Param        credentials  body      auth.Credentials  true  "User credentials"
+// @Success      201  {object}  map[string]string  "Account created"
+// @Failure      400  {object}  map[string]string  "User already exists or input error"
+// @Failure      500  {object}  map[string]string  "Internal server error"
+// @Router       /register [post]
 func Registrate(c *gin.Context) {
 	var inputForm auth.Credentials
 

@@ -7,6 +7,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CancelTask godoc
+// @Summary      Cancel a task
+// @Description  Stops a running task by its ID
+// @Tags         tasks
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  true  "Task ID"
+// @Success      200  {object}  map[string]string  "Task stopped successfully"
+// @Failure      404  {object}  map[string]string  "Task does not exist"
+// @Failure      400  {object}  map[string]string  "Failed to stop the task"
+// @Router       /tasks/{id} [delete]
 func CancelTask(c *gin.Context) {
 	taskId := c.Param("id")
 	task := tasks.GetTask(taskId)

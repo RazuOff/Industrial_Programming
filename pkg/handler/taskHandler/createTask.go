@@ -7,6 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CreateTask godoc
+// @Summary      Create a new task
+// @Description  Creates a new task and starts its execution asynchronously
+// @Tags         tasks
+// @Accept       json
+// @Produce      json
+// @Success      201  {object}  map[string]string  "Task created successfully"
+// @Failure      400  {object}  map[string]string  "Failed to create task"
+// @Router       /tasks [post]
 func CreateTask(c *gin.Context) {
 	taskID, err := tasks.CreateTask()
 	if err != nil {

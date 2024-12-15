@@ -8,6 +8,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CreateProduct godoc
+// @Summary      Create a product
+// @Description  Creating product
+// @Tags         products
+// @Accept       json
+// @Produce      json
+// @Param        product body   models.Product  true  "Add product"
+// @Success      200  {object}  models.Product
+// @Failure      400  {object}  map[string]string  "Invalid request or error message"
+// @Router       /products [post]
 func CreateProduct(c *gin.Context) {
 	var newProduct models.Product
 

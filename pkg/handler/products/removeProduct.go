@@ -7,6 +7,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// DeleteProduct godoc
+// @Summary      Delete a product
+// @Description  Deletes a product from the repository by its ID. Requires authentication.
+// @Tags         products
+// @Accept       json
+// @Produce      json
+// @Security     JWT
+// @Param        id   path      string  true  "Product ID"
+// @Success      200  {object}  map[string]string  "Product deleted successfully"
+// @Failure      404  {object}  map[string]string  "Product not found"
+// @Failure      400  {object}  map[string]string  "Failed to delete product"
+// @Router       /products/{id} [delete]
 func DeleteProduct(c *gin.Context) {
 	id := c.Param("id")
 
