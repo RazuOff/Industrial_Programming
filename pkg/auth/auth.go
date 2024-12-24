@@ -21,14 +21,16 @@ type Credentials struct {
 }
 
 type Claims struct {
+	ID       int    `json:"id"`
 	Username string `json:"username"`
 	Role     string `json:"role"`
 	jwt.StandardClaims
 }
 
-func GenerateToken(username string, role string) (string, error) {
+func GenerateToken(username string, role string, userID int) (string, error) {
 	expirationTime := time.Now().Add(5 * time.Minute)
 	claims := &Claims{
+		ID:       userID,
 		Username: username,
 		Role:     role,
 		StandardClaims: jwt.StandardClaims{
@@ -55,7 +57,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		c.Set("role", claims.Role)
-
+		c.Set("id", claims.ID)
 		c.Next()
 	}
 }

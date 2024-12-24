@@ -11,9 +11,11 @@ import (
 // @Tags         tasks
 // @Accept       json
 // @Produce      json
+// @Security JWT
 // @Param        id   path      string  true  "Task ID"
 // @Success      200  {object}  tasks.Task  "Task details"
 // @Failure      404  {object}  map[string]string  "Task not found"
+// @Failure      401  {object}  map[string]string  "Invalid request or error message"
 // @Router       /tasks/{id} [get]
 func GetTask(c *gin.Context) {
 	taskID := c.Param("id")

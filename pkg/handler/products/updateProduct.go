@@ -14,16 +14,22 @@ import (
 // @Tags         products
 // @Accept       json
 // @Produce      json
+// @Security JWT
 // @Param        product  body      models.Product  true  "Updated product data"
 // @Success      200      {object}  map[string]string  "Product updated successfully"
 // @Failure      400      {object}  map[string]string  "Invalid request or update failed"
+// @Failure      401  {object}  map[string]string  "Invalid request or error message"
+// @Failure      403  {object}  map[string]string  "Invalid request or error message"
 // @Router       /products [put]
 func UpdateProduct(c *gin.Context) {
-
 	var updatedProd models.Product
 
 	if err := c.BindJSON(&updatedProd); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+		return
+	}
+
+	if !repository.HandleProductFieldsError(c, updatedProd) {
 		return
 	}
 

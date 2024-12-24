@@ -14,9 +14,11 @@ import (
 // @Tags         products
 // @Accept       json
 // @Produce      json
+// @Security JWT
 // @Param        id   path      string  true  "Product ID"
 // @Success      200  {object}  models.Product
 // @Failure      404  {object}  map[string]string  "Product not found"
+// @Failure      401  {object}  map[string]string  "Invalid request or error message"
 // @Router       /products/{id} [get]
 func GetProductsById(c *gin.Context) {
 	id := c.Param("id")

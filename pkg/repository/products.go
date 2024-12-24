@@ -2,10 +2,28 @@ package repository
 
 import (
 	"context"
+	"errors"
+	"net/http"
 
 	"ginexample.com/pkg/db/postgre"
 	"ginexample.com/pkg/models"
+	"github.com/gin-gonic/gin"
 )
+
+func HandleProductFieldsError(c *gin.Context, prod models.Product) bool {
+
+	if prod.Price <= 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Цена не может быть <=0"})
+		return false
+	}
+
+	if prod.Quantity < 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Количество не может быть отрицательным"})
+		return false
+	}
+
+	return true
+}
 
 func GetProducts(limit int, page int, searchString string, sort string) ([]models.Product, error) {
 	var products []models.Product
@@ -31,7 +49,7 @@ func GetProductsCtx(ctx *context.Context) ([]models.Product, error) {
 
 }
 
-func AddProducts(products []models.Product) error {
+func AddProducts(products []*models.Product) error {
 
 	return postgre.DB.Create(products).Error
 }
@@ -48,6 +66,8 @@ func DeleteProduct(prod models.Product) error {
 }
 
 func UpdateProduct(prod models.Product) error {
-
+	if err := postgre.DB.Where("id = ?", prod.ID).First(models.Product{}).Error; err != nil {
+		return errors.New("Такого id нет")
+	}
 	return postgre.DB.Save(prod).Error
 }

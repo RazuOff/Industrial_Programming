@@ -4,6 +4,7 @@ import (
 	_ "ginexample.com/docs"
 	"ginexample.com/pkg/auth"
 	"ginexample.com/pkg/handler"
+	"ginexample.com/pkg/handler/cart"
 	"ginexample.com/pkg/handler/products"
 	taskhandler "ginexample.com/pkg/handler/taskHandler"
 	"github.com/gin-gonic/gin"
@@ -20,7 +21,6 @@ func StartServer(port string) {
 // @title           Swagger Example API
 // @version         1.0
 // @description     This is a sample server celler server.
-// @termsOfService  http://swagger.io/terms/
 
 // @contact.name   API Support
 // @contact.url    http://www.swagger.io/support
@@ -32,7 +32,11 @@ func StartServer(port string) {
 // @host      localhost:8080
 // @BasePath  /
 
-// @securityDefinitions.basic  BasicAuth
+// @securityDefinitions.apikey JWT
+// @in header
+// @name Authorization
+
+// @termsOfService  http://swagger.io/terms/
 
 // @externalDocs.description  OpenAPI
 // @externalDocs.url          https://swagger.io/resources/open-api/
@@ -42,16 +46,20 @@ func fillEndpoints(router *gin.Engine) {
 	router.POST("/login", handler.Login)
 	router.GET("/users", auth.AuthMiddleware(), handler.GetUsers)
 
-	router.GET("/products", products.GetProducts)
-	router.GET("/products/:id", products.GetProductsById)
-	router.GET("/products/timeout", products.GetProductsWithTimeout)
+	router.GET("/products", auth.AuthMiddleware(), products.GetProducts)
+	router.GET("/products/:id", auth.AuthMiddleware(), products.GetProductsById)
+	router.GET("/products/timeout", auth.AuthMiddleware(), products.GetProductsWithTimeout)
 	router.POST("/products", auth.AuthMiddleware(), auth.AdminCheck(), products.CreateProduct)
 	router.PUT("/products", auth.AuthMiddleware(), auth.AdminCheck(), products.UpdateProduct)
 	router.DELETE("/products/:id", auth.AuthMiddleware(), auth.AdminCheck(), products.DeleteProduct)
 
-	router.POST("/tasks", taskhandler.CreateTask)
-	router.GET("/tasks/:id", taskhandler.GetTask)
-	router.DELETE("/tasks/:id", taskhandler.CancelTask)
+	router.GET("/cart", auth.AuthMiddleware(), cart.GetAllProductsInCart)
+	router.DELETE("/cart/products/:id", auth.AuthMiddleware(), cart.DeleteProductFormCart)
+	router.PUT("/cart/products/:id", auth.AuthMiddleware(), cart.AddProductToCart)
+
+	router.POST("/tasks", auth.AuthMiddleware(), taskhandler.CreateTask)
+	router.GET("/tasks/:id", auth.AuthMiddleware(), taskhandler.GetTask)
+	router.DELETE("/tasks/:id", auth.AuthMiddleware(), taskhandler.CancelTask)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(files.Handler))
 }

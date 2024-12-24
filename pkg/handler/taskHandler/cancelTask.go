@@ -13,10 +13,12 @@ import (
 // @Tags         tasks
 // @Accept       json
 // @Produce      json
+// @Security JWT
 // @Param        id   path      string  true  "Task ID"
 // @Success      200  {object}  map[string]string  "Task stopped successfully"
 // @Failure      404  {object}  map[string]string  "Task does not exist"
 // @Failure      400  {object}  map[string]string  "Failed to stop the task"
+// @Failure      401  {object}  map[string]string  "Invalid request or error message"
 // @Router       /tasks/{id} [delete]
 func CancelTask(c *gin.Context) {
 	taskId := c.Param("id")

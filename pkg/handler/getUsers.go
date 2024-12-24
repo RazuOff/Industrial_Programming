@@ -14,7 +14,9 @@ import (
 // @Tags         users
 // @Accept       json
 // @Produce      json
+// @Security JWT
 // @Success      200  {array}   models.User  "List of users"
+// @Failure      401  {object}  map[string]string  "Invalid request or error message"
 // @Failure      500  {object}  map[string]string  "Internal server error"
 // @Router       /users [get]
 func GetUsers(c *gin.Context) {

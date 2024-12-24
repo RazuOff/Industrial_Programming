@@ -18,7 +18,7 @@ import (
 // @Success      201  {object}  map[string]string  "Account created"
 // @Failure      400  {object}  map[string]string  "User already exists or input error"
 // @Failure      500  {object}  map[string]string  "Internal server error"
-// @Router       /register [post]
+// @Router       /registrate [post]
 func Registrate(c *gin.Context) {
 	var inputForm auth.Credentials
 

@@ -1,6 +1,9 @@
 package repository
 
 import (
+	"log"
+	"strconv"
+
 	"ginexample.com/pkg/db/postgre"
 	"ginexample.com/pkg/models"
 )
@@ -15,7 +18,18 @@ func GetUsers() ([]models.User, error) {
 	err := postgre.DB.Find(&users).Error
 	return users, err
 }
-func AddUser(login string, password string) error {
 
-	return postgre.DB.Create(&models.User{Username: login, Password: password}).Error
+func AddUser(login string, password string) error {
+	user := models.User{Username: login, Password: password}
+
+	if err := postgre.DB.Create(&user).Error; err != nil {
+		return err
+	}
+
+	if _, err := CreateCart(user.ID); err != nil {
+		log.Println("TRY TO CREATE CART FAIL, USER_ID=" + strconv.Itoa(user.ID))
+		return err
+	}
+
+	return nil
 }

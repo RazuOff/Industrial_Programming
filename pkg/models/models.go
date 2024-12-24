@@ -14,7 +14,17 @@ type Product struct {
 
 type User struct {
 	ID       int    `gorm:"primaryKey"`
-	Username string `json:"username"`
+	Username string `gorm:"unique;not null" json:"username"`
 	Password string `json:"password"`
 	Role     string `gorm:"default:'User'"`
+}
+
+type Cart struct {
+	ID     int `gorm:"primaryKey"`
+	UserID int `gorm:"unique;not null" json:"user_id"`
+}
+
+type CartProduct struct {
+	CartID    int `json:"cart_id"`
+	ProductID int `json:"product_id"`
 }

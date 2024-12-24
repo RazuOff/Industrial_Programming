@@ -17,12 +17,14 @@ import (
 // @Tags         products
 // @Accept       json
 // @Produce      json
+// @Security JWT
 // @Param        page   query     int     false  "Page number (default: 1)"
 // @Param        limit  query     int     false  "Number of products per page (default: 10)"
 // @Param        name   query     string  false  "Filter by product name"
 // @Param        sort   query     string  false  "Sort column"
 // @Success      200    {array}   models.Product
 // @Failure      400    {object}  map[string]string  "Invalid request"
+// @Failure      401  {object}  map[string]string  "Invalid request or error message"
 // @Failure      500    {object}  map[string]string  "Internal server error"
 // @Router       /products [get]
 func GetProducts(c *gin.Context) {
@@ -58,7 +60,9 @@ func GetProducts(c *gin.Context) {
 // @Tags         products
 // @Accept       json
 // @Produce      json
+// @Security JWT
 // @Success      200  {array}   models.Product
+// @Failure      401  {object}  map[string]string  "Invalid request or error message"
 // @Failure      500  {object}  map[string]string  "Internal server error"
 // @Router       /products/timeout [get]
 func GetProductsWithTimeout(c *gin.Context) {
